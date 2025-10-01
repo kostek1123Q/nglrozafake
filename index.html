@@ -23,9 +23,9 @@
       color: #fff;
     }
 
-    /* Bubble (wiadomość) */
+    /* Bubble (box wiadomości) */
     .bubble {
-      background: linear-gradient(180deg, #fff 35%, rgba(255, 255, 255, 0.2) 100%);
+      background: #fff;
       border-radius: 20px;
       width: 90%;
       max-width: 600px;
@@ -34,6 +34,8 @@
       color: #333;
       position: relative;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
     }
 
     .header {
@@ -59,9 +61,14 @@
       color: #555;
     }
 
-    .textarea {
-      width: 100%;
+    /* Textarea identyczny jak NGL */
+    .textarea-container {
+      position: relative;
       margin-top: 15px;
+    }
+
+    textarea {
+      width: 100%;
       font-size: 1.2em;
       border: none;
       outline: none;
@@ -69,12 +76,29 @@
       background: transparent;
       color: #333;
       font-family: inherit;
+      padding: 10px 0;
+      min-height: 60px;
+    }
+
+    .textarea-placeholder {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      color: #999;
+      font-size: 1.2em;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    textarea:focus + .textarea-placeholder,
+    textarea:not(:placeholder-shown) + .textarea-placeholder {
+      opacity: 0;
     }
 
     .dice {
       position: absolute;
-      bottom: 15px;
-      right: 15px;
+      bottom: 10px;
+      right: 10px;
       font-size: 1.2em;
     }
 
@@ -115,6 +139,9 @@
       text-decoration: none;
       font-size: 1.2em;
       box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+
+    .button.pulse {
       animation: pulse 1.5s infinite;
     }
 
@@ -141,22 +168,19 @@
       opacity: 1;
     }
 
-    /* Nowy przycisk Send */
+    /* Send button taki jak czarny */
     .send-btn {
       display: none;
-      margin-top: 15px;
+      margin-top: 20px;
       background: #000;
       color: #fff;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 30px;
-      font-size: 1em;
-      cursor: pointer;
       font-weight: bold;
-      transition: transform 0.2s;
-    }
-    .send-btn:hover {
-      transform: scale(1.05);
+      padding: 16px 45px;
+      border-radius: 50px;
+      font-size: 1.2em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
     .send-btn.show {
       display: inline-block;
@@ -165,7 +189,7 @@
 </head>
 <body>
 
-  <!-- Wiadomość -->
+  <!-- Box z wiadomością -->
   <div class="bubble">
     <div class="header">
       <div class="pfp"></div>
@@ -174,8 +198,11 @@
         <div class="prompt">send me anonymous messages!</div>
       </div>
     </div>
-    <textarea id="messageBox" placeholder="type your message..."></textarea>
-    <div class="dice">🎲</div>
+    <div class="textarea-container">
+      <textarea id="messageBox" placeholder=" "></textarea>
+      <div class="textarea-placeholder">send me anonymous messages...</div>
+      <div class="dice">🎲</div>
+    </div>
     <button class="send-btn" id="sendBtn">Send</button>
   </div>
 
@@ -185,7 +212,7 @@
   <!-- Sekcja dolna -->
   <div class="bottom-container" id="bottomBox">
     <h2 class="download-prompt">👇 231 friends just tapped the button 👇</h2>
-    <a class="button" href="#">Get your own messages!</a>
+    <a class="button pulse" href="#">Get your own messages!</a>
     <div class="tos-privacy">
       <a href="#">Terms</a>
       <a href="#">Privacy</a>
@@ -198,7 +225,7 @@
     const sendBtn = document.getElementById("sendBtn");
 
     textarea.addEventListener("input", () => {
-      if (textarea.value.length > 0) {
+      if (textarea.value.trim().length > 0) {
         bottomBox.classList.add("hide");
         sendBtn.classList.add("show");
       } else {
